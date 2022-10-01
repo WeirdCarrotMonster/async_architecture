@@ -1,3 +1,7 @@
+Доска в miro
+============
+https://miro.com/app/board/uXjVPR-C8OQ=/?share_link_id=195409214334
+
 События
 =======
 ![image](https://user-images.githubusercontent.com/935751/193419696-04dd6c83-5bdc-4702-bf43-abc9ee1a843b.png)
