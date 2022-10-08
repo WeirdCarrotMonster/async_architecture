@@ -1,5 +1,11 @@
 services:
-  database:
+  nats:
+    image: nats
+    ports:
+      - 4222:4222
+    command: -js
+
+  mongodb:
     image: mongo
     restart: always
     environment:
@@ -14,7 +20,7 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: password
-      ME_CONFIG_MONGODB_URL: mongodb://root:password@database:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://root:password@mongodb:27017/
 
   auth_service:
     build:
@@ -23,7 +29,7 @@ services:
       - 8001:8000
     restart: always
     environment:
-      DATABASE_URI: mongodb://root:password@database:27017/auth_service
+      DATABASE_URI: mongodb://root:password@mongodb:27017/auth_service
 
   task_tracker:
     build:
@@ -31,16 +37,7 @@ services:
     ports:
       - 8002:8000
     environment:
-      DATABASE_URI: mongodb://root:password@database:27017/task_tracker
-
-  frontend:
-    build:
-      context: frontend
-    ports:
-      - 8000:8000
-    environment:
-      BACKEND_URL: http://backend:8000/
-      AUTH_SERVICE_URL: http://auth_service:8000/
+      DATABASE_URI: mongodb://root:password@mongodb:27017/task_tracker
 
 volumes:
   database:
