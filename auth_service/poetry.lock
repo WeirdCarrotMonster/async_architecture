@@ -118,6 +118,17 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "nats-py"
+version = "2.2.0"
+description = "NATS client for Python"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+nkeys = ["nkeys"]
+
+[[package]]
 name = "pathspec"
 version = "0.10.1"
 description = "Utility library for gitignore style pattern matching of file paths."
@@ -225,7 +236,7 @@ standard = ["colorama (>=0.4)", "httptools (>=0.4.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "2594867ad760ddd610fd9dce6b1c148720284fea23ff90b2dbfefd3047890296"
+content-hash = "3baa7c3425c7d93b29a1e39c11700c130c1c5299b6cc417381a3cf9932ef5a6e"
 
 [metadata.files]
 anyio = [
@@ -284,6 +295,9 @@ motor = [
 mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
     {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
+]
+nats-py = [
+    {file = "nats-py-2.2.0.tar.gz", hash = "sha256:e45a0bafde2d04fb2d2bd6b0527b95bc77f371beaf7b6237354be0234ff9bba9"},
 ]
 pathspec = [
     {file = "pathspec-0.10.1-py3-none-any.whl", hash = "sha256:46846318467efc4556ccfd27816e004270a9eeeeb4d062ce5e6fc7a87c573f93"},

@@ -11,6 +11,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - 27017:27017
 
   mongo-express:
     image: mongo-express
@@ -30,6 +32,7 @@ services:
     restart: always
     environment:
       DATABASE_URI: mongodb://root:password@mongodb:27017/auth_service
+      NATS_URI: nats://nats:4222
 
   task_tracker:
     build:
@@ -38,6 +41,7 @@ services:
       - 8002:8000
     environment:
       DATABASE_URI: mongodb://root:password@mongodb:27017/task_tracker
+      NATS_URI: nats://nats:4222
 
 volumes:
   database:
