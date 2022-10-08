@@ -22,6 +22,10 @@ class AbstractTaskRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    async def get_task_by_id(self, public_id: model.TaskPublicID) -> model.Task | None:
+        raise NotImplementedError
+
+    @abstractmethod
     async def create_task(self, request: model.CreateTaskRequest) -> model.Task:
         raise NotImplementedError
 
@@ -64,6 +68,20 @@ class MongoDbTaskRepository(AbstractTaskRepository):
             )
 
         return result
+
+    async def get_task_by_id(self, public_id: model.TaskPublicID) -> model.Task | None:
+        query = {"public_id": public_id}
+        document = await self.collection.find_one(query)
+
+        if not document:
+            return None
+
+        return model.Task(
+            description=document["description"],
+            public_id=model.TaskPublicID(document["public_id"]),
+            status=model.TaskStatus(document["status"]),
+            user_id=model.UserPublicID(document["user_id"]),
+        )
 
     async def create_task(self, request: model.CreateTaskRequest) -> model.Task:
         public_id = uuid4().hex

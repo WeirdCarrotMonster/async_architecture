@@ -86,6 +86,34 @@ class TaskAdded(Event):
     description: str
 
 
+@dataclass
+class TaskAssigned(Event):
+    @classmethod
+    def get_topic_name(cls) -> str:
+        return "cud.task"
+
+    public_id: model.TaskPublicID
+    user_id: model.UserPublicID
+
+
+@dataclass
+class TaskClosed(Event):
+    @classmethod
+    def get_topic_name(cls) -> str:
+        return "cud.task"
+
+    public_id: model.TaskPublicID
+
+
+@dataclass
+class TaskShuffleRequested(Event):
+    @classmethod
+    def get_topic_name(cls) -> str:
+        return "cud.task"
+
+    user_id: model.UserPublicID
+
+
 EVENT_NAME_MAP = {
     "UserCreated": UserCreated,
     "UserUpdated": UserUpdated,

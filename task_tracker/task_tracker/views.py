@@ -46,6 +46,23 @@ class CreateTaskForm(BaseModel):
     description: str
 
 
+@router.get("/task")
+async def get_tasks(
+    user: model.User = Depends(get_user),
+    uow: AbstractUnitOfWork = Depends(get_unit_of_work),
+):
+    kwargs = {}
+    if user.role != model.UserRole.admin:
+        kwargs["user_id"] = user.public_id
+
+    async with uow:
+        tasks = await task_service.get_tasks(
+            uow, status=model.TaskStatus.open, **kwargs
+        )
+
+    return tasks
+
+
 @router.post("/task", response_model=model.Task)
 async def create_task(
     data: CreateTaskForm,
@@ -56,3 +73,15 @@ async def create_task(
         task = await task_service.create_task(uow, description=data.description)
 
     return task
+
+
+@router.post("/shuffle", status_code=201)
+async def request_task_shuffle(
+    user: model.User = Depends(get_user),
+    uow: AbstractUnitOfWork = Depends(get_unit_of_work),
+):
+    if user.role != model.UserRole.admin:
+        raise HTTPException(status_code=403)
+
+    async with uow:
+        await task_service.request_task_shuffle(uow, user_id=user.public_id)
