@@ -19,6 +19,12 @@ class AbstractUserRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    async def get_random_user(
+        self, roles: list[model.UserRole] | None = None
+    ) -> model.User | None:
+        raise NotImplementedError
+
+    @abstractmethod
     async def upsert_user(self, user: model.User) -> model.User:
         raise NotImplementedError
 
@@ -40,6 +46,28 @@ class MongoDbUserRepository(AbstractUserRepository):
         self, user_public_id: model.UserPublicID
     ) -> model.User | None:
         document = await self.collection.find_one({"public_id": user_public_id})
+
+        if not document:
+            return None
+
+        return model.User(
+            email=model.UserEmail(document["email"]),
+            public_id=model.UserPublicID(document["public_id"]),
+            role=model.UserRole(document["role"]),
+        )
+
+    async def get_random_user(
+        self, roles: list[model.UserRole] | None = None
+    ) -> model.User | None:
+        pipeline: list[dict] = []
+        if roles:
+            pipeline.append({"$match": {"role": {"$in": roles}}})
+
+        pipeline.append({"$sample": {"size": 1}})
+
+        document = None
+        async for document in self.collection.aggregate(pipeline):
+            pass
 
         if not document:
             return None

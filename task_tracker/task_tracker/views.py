@@ -1,11 +1,13 @@
 from jwt import decode
 from fastapi import APIRouter, HTTPException, Depends, Header
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from pydantic import BaseModel
 
 from task_tracker.domain import model
 from task_tracker.config import settings
-from task_tracker.service_layer.unit_of_work import get_unit_of_work
+from task_tracker.service_layer.unit_of_work import get_unit_of_work, AbstractUnitOfWork
 from task_tracker.service_layer import user as user_service
+from task_tracker.service_layer import task as task_service
 
 
 router = APIRouter()
@@ -38,3 +40,19 @@ async def get_user(
 @router.get("/whoami", response_model=model.User)
 async def get_whoami(user: model.User = Depends(get_user)):
     return user
+
+
+class CreateTaskForm(BaseModel):
+    description: str
+
+
+@router.post("/task", response_model=model.Task)
+async def create_task(
+    data: CreateTaskForm,
+    user: model.User = Depends(get_user),
+    uow: AbstractUnitOfWork = Depends(get_unit_of_work),
+):
+    async with uow:
+        task = await task_service.create_task(uow, description=data.description)
+
+    return task

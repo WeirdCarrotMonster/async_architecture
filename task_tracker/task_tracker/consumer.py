@@ -47,10 +47,12 @@ async def run_consumer():
             event = parse_event(message.data)
             if not event:
                 print(f"Cannot parse message into event; skipping: {message}")
+                continue
 
             handlers = get_event_handlers(event)
             if not handlers:
                 print(f"Event has no handlers; skipping: {event}")
+                continue
 
             for handler in handlers:
                 print(f"Calling {handler}...")

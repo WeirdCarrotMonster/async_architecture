@@ -14,7 +14,6 @@ class AbstractTaskRepository(ABC):
         self.events: list[event.Event] = []
 
     @abstractmethod
-    @abstractmethod
     async def get_tasks(
         self,
         status: model.TaskStatus | None = None,
@@ -27,7 +26,7 @@ class AbstractTaskRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def close_task(self, task: model.Task) -> model.Task:
+    async def update_task(self, task: model.Task) -> model.Task:
         raise NotImplementedError
 
 
@@ -40,7 +39,6 @@ class MongoDbTaskRepository(AbstractTaskRepository):
         )
         self.collection: "motor.AsyncIOMotorCollection" = self.database["task"]
 
-    @abstractmethod
     async def get_tasks(
         self,
         status: model.TaskStatus | None = None,
@@ -110,6 +108,8 @@ class MongoDbTaskRepository(AbstractTaskRepository):
             user_id=task.user_id,
         )
         self.events.append(update_event)
+
+        return task
 
 
 async def get_task_repository() -> AbstractTaskRepository:

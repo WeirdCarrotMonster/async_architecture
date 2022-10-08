@@ -74,6 +74,18 @@ class TaskUpdated(Event):
     description: str
 
 
+@dataclass
+class TaskAdded(Event):
+    @classmethod
+    def get_topic_name(cls) -> str:
+        return "cud.task"
+
+    public_id: model.TaskPublicID
+    user_id: model.UserPublicID
+    status: model.TaskStatus
+    description: str
+
+
 EVENT_NAME_MAP = {
     "UserCreated": UserCreated,
     "UserUpdated": UserUpdated,
