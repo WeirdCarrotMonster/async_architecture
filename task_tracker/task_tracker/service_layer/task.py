@@ -53,7 +53,7 @@ async def request_task_shuffle(
     await uow.commit()
 
 
-async def shuffle_tasks(uow: AbstractUnitOfWork) -> None:
+async def shuffle_tasks(uow: AbstractUnitOfWork, *args, **kwargs) -> None:
     tasks = await uow.tasks.get_tasks(status=model.TaskStatus.open)
 
     for task in tasks:
@@ -69,9 +69,11 @@ async def shuffle_tasks(uow: AbstractUnitOfWork) -> None:
 
 
 async def close_task(
-    uow: AbstractUnitOfWork, task_id: model.TaskPublicID
+    uow: AbstractUnitOfWork, user_id: model.UserPublicID, task_id: model.TaskPublicID
 ) -> model.Task:
     task = await uow.tasks.get_task_by_id(task_id)
+    assert task.user_id == user_id
+
     task.status = model.TaskStatus.closed
 
     close_event = event.TaskClosed(public_id=task.public_id)
@@ -79,3 +81,8 @@ async def close_task(
 
     await uow.tasks.update_task(task)
     return task
+
+
+EVENT_HANDLERS = {
+    event.TaskShuffleRequested: [shuffle_tasks],
+}

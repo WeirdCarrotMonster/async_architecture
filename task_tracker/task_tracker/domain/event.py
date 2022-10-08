@@ -78,7 +78,7 @@ class TaskUpdated(Event):
 class TaskAdded(Event):
     @classmethod
     def get_topic_name(cls) -> str:
-        return "cud.task"
+        return "be.task"
 
     public_id: model.TaskPublicID
     user_id: model.UserPublicID
@@ -90,7 +90,7 @@ class TaskAdded(Event):
 class TaskAssigned(Event):
     @classmethod
     def get_topic_name(cls) -> str:
-        return "cud.task"
+        return "be.task"
 
     public_id: model.TaskPublicID
     user_id: model.UserPublicID
@@ -100,7 +100,7 @@ class TaskAssigned(Event):
 class TaskClosed(Event):
     @classmethod
     def get_topic_name(cls) -> str:
-        return "cud.task"
+        return "be.task"
 
     public_id: model.TaskPublicID
 
@@ -109,7 +109,7 @@ class TaskClosed(Event):
 class TaskShuffleRequested(Event):
     @classmethod
     def get_topic_name(cls) -> str:
-        return "cud.task"
+        return "be.task"
 
     user_id: model.UserPublicID
 
@@ -118,6 +118,7 @@ EVENT_NAME_MAP = {
     "UserCreated": UserCreated,
     "UserUpdated": UserUpdated,
     "UserDeleted": UserDeleted,
+    "TaskShuffleRequested": TaskShuffleRequested,
 }
 
 
