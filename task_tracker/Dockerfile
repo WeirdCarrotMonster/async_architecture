@@ -5,7 +5,7 @@ WORKDIR /app
 ADD requirements.txt .
 RUN pip install -r requirements.txt
 
-ADD backend backend/
+ADD task_tracker task_tracker/
 
 ENV PYTHONPATH="/app:$PATH"
 CMD ["python", "-m", "backend"]

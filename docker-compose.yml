@@ -25,13 +25,13 @@ services:
     environment:
       DATABASE_URI: mongodb://root:password@database:27017/auth_service
 
-  backend:
+  task_tracker:
     build:
-      context: backend
+      context: task_tracker
     ports:
       - 8002:8000
     environment:
-      DATABASE_URI: mongodb://root:password@database:27017/backend
+      DATABASE_URI: mongodb://root:password@database:27017/task_tracker
 
   frontend:
     build:
