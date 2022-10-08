@@ -6,6 +6,7 @@ class Settings(BaseSettings):
         "mongodb://root:password@127.0.0.1:27017/task_tracker?authSource=admin"
     )
     nats_uri: str = "nats://127.0.0.1:4222"
+    auth_secret: str = "890c60c0d41a3f2f0755c274418278cf"
 
 
 settings = Settings()
