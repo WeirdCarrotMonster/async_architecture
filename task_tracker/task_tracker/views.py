@@ -75,6 +75,20 @@ async def create_task(
     return task
 
 
+@router.post("/task/{task_id}/close", response_model=model.Task)
+async def close_task(
+    task_id: model.TaskPublicID,
+    user: model.User = Depends(get_user),
+    uow: AbstractUnitOfWork = Depends(get_unit_of_work),
+):
+    async with uow:
+        task = await task_service.close_task(
+            uow, user_id=user.public_id, task_id=task_id
+        )
+
+    return task
+
+
 @router.post("/shuffle", status_code=201)
 async def request_task_shuffle(
     user: model.User = Depends(get_user),
