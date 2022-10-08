@@ -7,11 +7,16 @@ from task_tracker.adapters.repository.user import (
     AbstractUserRepository,
     get_user_repository,
 )
+from task_tracker.adapters.repository.task import (
+    AbstractTaskRepository,
+    get_task_repository,
+)
 
 
 class AbstractUnitOfWork(ABC):
     message_bus: AbstractMessageBus
     users: AbstractUserRepository
+    tasks: AbstractTaskRepository
 
     def __init__(self, *args, **kwargs) -> None:
         self.events: list[Event] = []
@@ -23,7 +28,7 @@ class AbstractUnitOfWork(ABC):
         return False
 
     async def commit(self) -> None:
-        event_chain = chain(self.users.events, self.events)
+        event_chain = chain(self.users.events, self.tasks.events, self.events)
 
         for event in event_chain:
             await self.message_bus.send_event(event)
@@ -34,14 +39,17 @@ class UnitOfWork(AbstractUnitOfWork):
         self,
         message_bus: AbstractMessageBus,
         users: AbstractUserRepository,
+        tasks: AbstractTaskRepository,
     ):
         super().__init__()
         self.message_bus = message_bus
         self.users = users
+        self.tasks = tasks
 
 
 async def get_unit_of_work() -> AbstractUnitOfWork:
     message_bus = await get_message_bus()
     users = await get_user_repository()
+    tasks = await get_task_repository()
 
-    return UnitOfWork(message_bus=message_bus, users=users)
+    return UnitOfWork(message_bus=message_bus, users=users, tasks=tasks)
