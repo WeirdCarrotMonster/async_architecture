@@ -25,7 +25,8 @@ class TaskStatus(str, Enum):
     closed = "closed"
 
 
-TaskPublicID = NewType("TaskPublicId", str)
+TaskPublicID = NewType("TaskPublicID", str)
+TaskJiraID = NewType("TaskJiraID", str)
 
 
 @dataclass
@@ -34,6 +35,7 @@ class Task:
     user_id: UserPublicID
     status: TaskStatus
     description: str
+    jira_id: TaskJiraID | None = None
 
 
 @dataclass
