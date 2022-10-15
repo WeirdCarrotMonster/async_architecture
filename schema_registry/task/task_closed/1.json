@@ -1,0 +1,14 @@
+{
+  "title": "TaskClosed",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "public_id": {
+      "title": "Public Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "public_id"
+  ]
+}
