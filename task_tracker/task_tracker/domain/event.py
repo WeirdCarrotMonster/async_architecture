@@ -60,6 +60,7 @@ class TaskCreated(Event):
     user_id: model.UserPublicID
     status: model.TaskStatus
     description: str
+    jira_id: model.TaskJiraID | None
 
 
 @dataclass
@@ -72,6 +73,7 @@ class TaskUpdated(Event):
     user_id: model.UserPublicID
     status: model.TaskStatus
     description: str
+    jira_id: model.TaskJiraID | None
 
 
 @dataclass
@@ -84,6 +86,7 @@ class TaskAdded(Event):
     user_id: model.UserPublicID
     status: model.TaskStatus
     description: str
+    jira_id: model.TaskJiraID | None
 
 
 @dataclass

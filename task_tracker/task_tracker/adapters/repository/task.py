@@ -90,6 +90,7 @@ class MongoDbTaskRepository(AbstractTaskRepository):
             "description": request.description,
             "public_id": public_id,
             "status": model.TaskStatus.open,
+            "jira_id": request.jira_id,
         }
         await self.collection.insert_one(document)
 
@@ -98,6 +99,7 @@ class MongoDbTaskRepository(AbstractTaskRepository):
             public_id=model.TaskPublicID(public_id),
             status=model.TaskStatus.open,
             user_id=request.user_id,
+            jira_id=request.jira_id,
         )
         self.events.append(create_event)
 
@@ -106,6 +108,7 @@ class MongoDbTaskRepository(AbstractTaskRepository):
             public_id=model.TaskPublicID(public_id),
             status=model.TaskStatus.open,
             user_id=request.user_id,
+            jira_id=request.jira_id,
         )
 
     async def update_task(self, task: model.Task) -> model.Task:
@@ -115,6 +118,7 @@ class MongoDbTaskRepository(AbstractTaskRepository):
             "description": task.description,
             "public_id": task.public_id,
             "status": model.TaskStatus.open,
+            "jira_id": task.jira_id,
         }
 
         await self.collection.replace_one(query, document)
@@ -124,6 +128,7 @@ class MongoDbTaskRepository(AbstractTaskRepository):
             public_id=task.public_id,
             status=task.status,
             user_id=task.user_id,
+            jira_id=task.jira_id,
         )
         self.events.append(update_event)
 

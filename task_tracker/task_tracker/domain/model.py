@@ -42,3 +42,4 @@ class Task:
 class CreateTaskRequest:
     user_id: UserPublicID
     description: str
+    jira_id: TaskJiraID | None = None
