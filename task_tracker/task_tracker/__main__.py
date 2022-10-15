@@ -6,6 +6,7 @@ def run_server():
 
 def run_consumer():
     import asyncio
+
     from task_tracker.consumer import run_consumer
 
     asyncio.run(run_consumer())

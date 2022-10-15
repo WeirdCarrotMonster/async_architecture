@@ -1,9 +1,12 @@
+import uuid
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING
 from json import dumps
+from typing import TYPE_CHECKING
+
+from pydantic import BaseModel
 
 from task_tracker.data_sources import data_sources
-from task_tracker.domain.event import Event
+from task_tracker.domain.event.builder import get_event_name_version, get_event_topic
 
 if TYPE_CHECKING:
     import nats
@@ -12,7 +15,7 @@ if TYPE_CHECKING:
 
 class AbstractMessageBus(ABC):
     @abstractmethod
-    async def send_event(self, event: Event) -> None:
+    async def send_event(self, event: BaseModel) -> None:
         raise NotImplementedError
 
 
@@ -21,13 +24,19 @@ class NatsMessageBus(AbstractMessageBus):
         self.nats_client: "nats.NATS" = nats_client
         self.jetstream: "nats.js.JetStreamContext" = nats_client.jetstream()
 
-    async def send_event(self, event: Event) -> None:
+    async def send_event(self, event: BaseModel) -> None:
+        event_cls = event.__class__
+        name, version = get_event_name_version(event_cls)
+
         payload_data = {
-            "name": event.get_event_name(),
-            "data": event.get_data(),
+            "id": str(uuid.uuid4()),
+            "name": name,
+            "version": version,
+            "data": event.dict(),
         }
+
         payload_bytes = dumps(payload_data).encode()
-        subject = event.get_topic_name()
+        subject = get_event_topic(event_cls)
 
         await self.jetstream.publish(subject, payload=payload_bytes)
 

@@ -1,15 +1,16 @@
 from abc import ABC
 from itertools import chain
 
+from pydantic import BaseModel
+
 from task_tracker.adapters.message_bus import AbstractMessageBus, get_message_bus
-from task_tracker.domain.event import Event
-from task_tracker.adapters.repository.user import (
-    AbstractUserRepository,
-    get_user_repository,
-)
 from task_tracker.adapters.repository.task import (
     AbstractTaskRepository,
     get_task_repository,
+)
+from task_tracker.adapters.repository.user import (
+    AbstractUserRepository,
+    get_user_repository,
 )
 
 
@@ -19,7 +20,7 @@ class AbstractUnitOfWork(ABC):
     tasks: AbstractTaskRepository
 
     def __init__(self, *args, **kwargs) -> None:
-        self.events: list[Event] = []
+        self.events: list[BaseModel] = []
 
     async def __aenter__(self) -> None:
         pass

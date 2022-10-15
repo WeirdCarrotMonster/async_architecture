@@ -3,9 +3,13 @@ from typing import TYPE_CHECKING
 from uuid import uuid4
 
 from bson import ObjectId
+from pydantic import BaseModel
 
 from auth_service.data_sources import data_sources
-from auth_service.domain import model, event
+from auth_service.domain import model
+from auth_service.domain.event.user.user_created.v1 import UserCreated
+from auth_service.domain.event.user.user_deleted.v1 import UserDeleted
+from auth_service.domain.event.user.user_updated.v1 import UserUpdated
 
 if TYPE_CHECKING:
     import motor.motor_asyncio as motor
@@ -13,7 +17,7 @@ if TYPE_CHECKING:
 
 class AbstractUserRepository(ABC):
     def __init__(self, *args, **kwargs):
-        self.events: list[event.Event] = []
+        self.events: list[BaseModel] = []
 
     @abstractmethod
     async def get_user_by_id(self, user_id: model.UserID) -> model.User | None:
@@ -92,7 +96,7 @@ class MongoDbUserRepository(AbstractUserRepository):
             role=request.role,
         )
 
-        create_event = event.UserCreated(
+        create_event = UserCreated(
             public_id=user.public_id,
             role=user.role,
             email=user.email,
@@ -114,7 +118,7 @@ class MongoDbUserRepository(AbstractUserRepository):
             role=user.role,
         )
 
-        update_event = event.UserUpdated(
+        update_event = UserUpdated(
             public_id=user.public_id,
             role=user.role,
             email=user.email,
@@ -124,7 +128,7 @@ class MongoDbUserRepository(AbstractUserRepository):
         return user
 
     async def delete_user(self, user: model.User) -> None:
-        delete_event = event.UserDeleted(public_id=user.public_id)
+        delete_event = UserDeleted(public_id=user.public_id)
 
         self.events.append(delete_event)
         await self.collection.delete_one({"_id": user.id})

@@ -1,15 +1,16 @@
 from abc import ABC
 from itertools import chain
 
+from pydantic import BaseModel
+
 from auth_service.adapters.message_bus import AbstractMessageBus, get_message_bus
-from auth_service.domain.event import Event
-from auth_service.adapters.repository.user import (
-    AbstractUserRepository,
-    get_user_repository,
-)
 from auth_service.adapters.repository.auth import (
     AbstractAuthRepository,
     get_auth_repository,
+)
+from auth_service.adapters.repository.user import (
+    AbstractUserRepository,
+    get_user_repository,
 )
 
 
@@ -19,7 +20,7 @@ class AbstractUnitOfWork(ABC):
     auths: AbstractAuthRepository
 
     def __init__(self, *args, **kwargs) -> None:
-        self.events: list[Event] = []
+        self.events: list[BaseModel] = []
 
     async def __aenter__(self) -> None:
         pass

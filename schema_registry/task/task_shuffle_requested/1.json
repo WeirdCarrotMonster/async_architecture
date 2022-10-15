@@ -1,0 +1,14 @@
+{
+  "title": "TaskShuffleRequested",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "title": "User Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_id"
+  ]
+}

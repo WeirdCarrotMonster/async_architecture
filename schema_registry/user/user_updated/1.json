@@ -1,0 +1,35 @@
+{
+  "title": "UserUpdated",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "public_id": {
+      "title": "Public Id",
+      "type": "string"
+    },
+    "role": {
+      "$ref": "#/definitions/UserRole"
+    },
+    "email": {
+      "title": "Email",
+      "type": "string"
+    }
+  },
+  "required": [
+    "public_id",
+    "role",
+    "email"
+  ],
+  "definitions": {
+    "UserRole": {
+      "title": "UserRole",
+      "description": "An enumeration.",
+      "enum": [
+        "admin",
+        "manager",
+        "accountant"
+      ],
+      "type": "string"
+    }
+  }
+}

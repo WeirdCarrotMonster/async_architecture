@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
-from uuid import uuid4
 
 from auth_service.data_sources import data_sources
-from auth_service.domain import model, event
+from auth_service.domain import event, model
 
 if TYPE_CHECKING:
     import motor.motor_asyncio as motor

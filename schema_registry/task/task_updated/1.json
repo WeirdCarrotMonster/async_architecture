@@ -1,0 +1,43 @@
+{
+  "title": "TaskUpdated",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "public_id": {
+      "title": "Public Id",
+      "type": "string"
+    },
+    "user_id": {
+      "title": "User Id",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/definitions/TaskStatus"
+    },
+    "description": {
+      "title": "Description",
+      "type": "string"
+    },
+    "jira_id": {
+      "title": "Jira Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "public_id",
+    "user_id",
+    "status",
+    "description"
+  ],
+  "definitions": {
+    "TaskStatus": {
+      "title": "TaskStatus",
+      "description": "An enumeration.",
+      "enum": [
+        "open",
+        "closed"
+      ],
+      "type": "string"
+    }
+  }
+}

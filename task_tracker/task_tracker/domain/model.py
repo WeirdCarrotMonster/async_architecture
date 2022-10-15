@@ -2,6 +2,17 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import NewType
 
+from pydantic import BaseModel
+
+
+@dataclass
+class Event:
+    id: str
+    time: str
+    name: str
+    version: int
+    data: BaseModel
+
 
 class UserRole(str, Enum):
     admin = "admin"
@@ -25,7 +36,8 @@ class TaskStatus(str, Enum):
     closed = "closed"
 
 
-TaskPublicID = NewType("TaskPublicId", str)
+TaskPublicID = NewType("TaskPublicID", str)
+TaskJiraID = NewType("TaskJiraID", str)
 
 
 @dataclass
@@ -34,9 +46,11 @@ class Task:
     user_id: UserPublicID
     status: TaskStatus
     description: str
+    jira_id: TaskJiraID | None = None
 
 
 @dataclass
 class CreateTaskRequest:
     user_id: UserPublicID
     description: str
+    jira_id: TaskJiraID | None = None
