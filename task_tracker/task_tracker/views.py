@@ -1,7 +1,7 @@
 from jwt import decode
 from fastapi import APIRouter, HTTPException, Depends, Header
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 from task_tracker.domain import model
 from task_tracker.config import settings
@@ -44,6 +44,13 @@ async def get_whoami(user: model.User = Depends(get_user)):
 
 class CreateTaskForm(BaseModel):
     description: str
+    jira_id: model.TaskJiraID | None = None
+
+    @validator("description")
+    def description_must_not_contain_jira_id(cls, v: str):
+        if "[" in v or "]" in v:
+            raise ValueError("Description must not contain JIRA ID")
+        return v
 
 
 @router.get("/task")
@@ -70,7 +77,9 @@ async def create_task(
     uow: AbstractUnitOfWork = Depends(get_unit_of_work),
 ):
     async with uow:
-        task = await task_service.create_task(uow, description=data.description)
+        task = await task_service.create_task(
+            uow, description=data.description, jira_id=data.jira_id
+        )
 
     return task
 

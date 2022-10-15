@@ -23,12 +23,14 @@ async def get_tasks(
     return tasks
 
 
-async def create_task(uow: AbstractUnitOfWork, description: str) -> model.Task:
+async def create_task(
+    uow: AbstractUnitOfWork, description: str, jira_id: model.TaskJiraID | None
+) -> model.Task:
     user = await uow.users.get_random_user(roles=ASSIGNABLE_ROLES)
     assert user is not None
 
     create_request = model.CreateTaskRequest(
-        user_id=user.public_id, description=description
+        user_id=user.public_id, description=description, jira_id=jira_id
     )
     task = await uow.tasks.create_task(create_request)
 
