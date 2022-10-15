@@ -1,7 +1,5 @@
+from task_tracker.domain import event, model
 from task_tracker.service_layer.unit_of_work import AbstractUnitOfWork
-
-from task_tracker.domain import model, event
-
 
 ASSIGNABLE_ROLES = [model.UserRole.manager, model.UserRole.accountant]
 

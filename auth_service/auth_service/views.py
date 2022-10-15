@@ -6,9 +6,8 @@ from pydantic import BaseModel
 
 from auth_service.config import settings
 from auth_service.domain import model
-from auth_service.service_layer.unit_of_work import AbstractUnitOfWork, get_unit_of_work
 from auth_service.service_layer import user as user_service
-
+from auth_service.service_layer.unit_of_work import AbstractUnitOfWork, get_unit_of_work
 
 router = APIRouter()
 

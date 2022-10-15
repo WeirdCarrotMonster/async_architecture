@@ -14,7 +14,6 @@ from task_tracker.domain.event.user.user_created.v1 import UserCreated
 from task_tracker.domain.event.user.user_deleted.v1 import UserDeleted
 from task_tracker.domain.event.user.user_updated.v1 import UserUpdated
 
-
 EVENTS: tuple[tuple[str, int, Type], ...] = (
     ("User.UserCreated", 1, UserCreated),
     ("User.UserUpdated", 1, UserUpdated),

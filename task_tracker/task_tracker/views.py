@@ -1,14 +1,13 @@
+from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jwt import decode
-from fastapi import APIRouter, HTTPException, Depends, Header
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel, validator
 
-from task_tracker.domain import model
 from task_tracker.config import settings
-from task_tracker.service_layer.unit_of_work import get_unit_of_work, AbstractUnitOfWork
-from task_tracker.service_layer import user as user_service
+from task_tracker.domain import model
 from task_tracker.service_layer import task as task_service
-
+from task_tracker.service_layer import user as user_service
+from task_tracker.service_layer.unit_of_work import AbstractUnitOfWork, get_unit_of_work
 
 router = APIRouter()
 security = HTTPBearer()

@@ -1,12 +1,11 @@
 import uuid
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING
 from json import dumps
+from typing import TYPE_CHECKING
 
 from pydantic import BaseModel
 
 from task_tracker.data_sources import data_sources
-from task_tracker.domain.event import Event
 from task_tracker.domain.event.builder import get_event_name_version, get_event_topic
 
 if TYPE_CHECKING:

@@ -2,6 +2,17 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import NewType
 
+from pydantic import BaseModel
+
+
+@dataclass
+class Event:
+    id: str
+    time: str
+    name: str
+    version: int
+    data: BaseModel
+
 
 class UserRole(str, Enum):
     admin = "admin"

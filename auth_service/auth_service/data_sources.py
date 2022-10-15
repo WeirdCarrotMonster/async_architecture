@@ -1,5 +1,5 @@
-import nats
 import motor.motor_asyncio as motor
+import nats
 
 from auth_service.config import settings
 

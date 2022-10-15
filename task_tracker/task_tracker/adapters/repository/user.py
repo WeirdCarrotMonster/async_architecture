@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
 from task_tracker.data_sources import data_sources
-from task_tracker.domain import model, event
+from task_tracker.domain import event, model
 
 if TYPE_CHECKING:
     import motor.motor_asyncio as motor
@@ -83,7 +83,7 @@ class MongoDbUserRepository(AbstractUserRepository):
         replace_data = {
             "public_id": user.public_id,
             "email": user.email,
-            "role": user.role,
+            "role": user.role.value,
         }
         await self.collection.replace_one(query, replace_data, upsert=True)
 
