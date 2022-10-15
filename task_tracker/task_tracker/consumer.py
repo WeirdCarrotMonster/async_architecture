@@ -2,26 +2,30 @@ import asyncio
 from json import loads
 
 from nats.errors import TimeoutError
+from pydantic import BaseModel
 
 from task_tracker.data_sources import data_sources
-from task_tracker.domain.event import Event, get_event_cls_by_name
+from task_tracker.domain.event.builder import get_event_cls
 from task_tracker.service_layer import user as user_service
 from task_tracker.service_layer.unit_of_work import get_unit_of_work
 
 
-def parse_event(payload: bytes) -> Event | None:
+def parse_event(payload: bytes) -> BaseModel | None:
     parsed = loads(payload)
+
     name = parsed["name"]
+    version = parsed["version"]
     data = parsed["data"]
 
-    cls = get_event_cls_by_name(name)
+    cls = get_event_cls(name, version)
+
     if not cls:
         return None
 
     return cls(**data)
 
 
-def get_event_handlers(event: Event):
+def get_event_handlers(event: BaseModel):
     event_cls = event.__class__
     handlers = user_service.EVENT_HANDLERS.get(event_cls)
     return handlers

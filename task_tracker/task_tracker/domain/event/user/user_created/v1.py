@@ -10,12 +10,12 @@ from pydantic import BaseModel, Field
 
 
 class UserRole(Enum):
-    admin = 'admin'
-    manager = 'manager'
-    accountant = 'accountant'
+    admin = "admin"
+    manager = "manager"
+    accountant = "accountant"
 
 
 class UserCreated(BaseModel):
-    public_id: str = Field(..., title='Public Id')
+    public_id: str = Field(..., title="Public Id")
     role: UserRole
-    email: str = Field(..., title='Email')
+    email: str = Field(..., title="Email")

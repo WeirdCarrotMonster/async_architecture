@@ -8,4 +8,4 @@ from pydantic import BaseModel, Field
 
 
 class TaskClosed(BaseModel):
-    public_id: str = Field(..., title='Public Id')
+    public_id: str = Field(..., title="Public Id")

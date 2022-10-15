@@ -8,4 +8,4 @@ from pydantic import BaseModel, Field
 
 
 class TaskShuffleRequested(BaseModel):
-    user_id: str = Field(..., title='User Id')
+    user_id: str = Field(..., title="User Id")

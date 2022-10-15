@@ -8,5 +8,5 @@ from pydantic import BaseModel, Field
 
 
 class TaskAssigned(BaseModel):
-    public_id: str = Field(..., title='Public Id')
-    user_id: str = Field(..., title='User Id')
+    public_id: str = Field(..., title="Public Id")
+    user_id: str = Field(..., title="User Id")

@@ -11,13 +11,13 @@ from pydantic import BaseModel, Field
 
 
 class TaskStatus(Enum):
-    open = 'open'
-    closed = 'closed'
+    open = "open"
+    closed = "closed"
 
 
 class TaskAdded(BaseModel):
-    public_id: str = Field(..., title='Public Id')
-    user_id: str = Field(..., title='User Id')
+    public_id: str = Field(..., title="Public Id")
+    user_id: str = Field(..., title="User Id")
     status: TaskStatus
-    description: str = Field(..., title='Description')
-    jira_id: Optional[str] = Field(None, title='Jira Id')
+    description: str = Field(..., title="Description")
+    jira_id: Optional[str] = Field(None, title="Jira Id")

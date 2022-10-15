@@ -2,8 +2,12 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 from uuid import uuid4
 
+from pydantic import BaseModel
+
 from task_tracker.data_sources import data_sources
-from task_tracker.domain import model, event
+from task_tracker.domain import model
+from task_tracker.domain.event.task.task_created.v1 import TaskCreated
+from task_tracker.domain.event.task.task_updated.v1 import TaskUpdated
 
 if TYPE_CHECKING:
     import motor.motor_asyncio as motor
@@ -11,7 +15,7 @@ if TYPE_CHECKING:
 
 class AbstractTaskRepository(ABC):
     def __init__(self, *args, **kwargs):
-        self.events: list[event.Event] = []
+        self.events: list[BaseModel] = []
 
     @abstractmethod
     async def get_tasks(
@@ -94,7 +98,7 @@ class MongoDbTaskRepository(AbstractTaskRepository):
         }
         await self.collection.insert_one(document)
 
-        create_event = event.TaskCreated(
+        create_event = TaskCreated(
             description=request.description,
             public_id=model.TaskPublicID(public_id),
             status=model.TaskStatus.open,
@@ -123,7 +127,7 @@ class MongoDbTaskRepository(AbstractTaskRepository):
 
         await self.collection.replace_one(query, document)
 
-        update_event = event.TaskUpdated(
+        update_event = TaskUpdated(
             description=task.description,
             public_id=task.public_id,
             status=task.status,
