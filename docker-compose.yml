@@ -31,7 +31,7 @@ services:
       - 8001:8000
     restart: always
     environment:
-      DATABASE_URI: mongodb://root:password@mongodb:27017/auth_service
+      DATABASE_URI: mongodb://root:password@mongodb:27017/auth_service?authSource=admin
       NATS_URI: nats://nats:4222
 
   task_tracker:
@@ -40,7 +40,7 @@ services:
     ports:
       - 8002:8000
     environment:
-      DATABASE_URI: mongodb://root:password@mongodb:27017/task_tracker
+      DATABASE_URI: mongodb://root:password@mongodb:27017/task_tracker?authSource=admin
       NATS_URI: nats://nats:4222
 
 volumes:
